@@ -28,16 +28,16 @@ using namespace std;
 
 int main(int argc, char* argv[]);
 //void outputFunction(std::vector<Individual> &popN, Mymap & phenolist,Mymap & genolist,double *totalC, double *genC,int const& roundN,int const& countGen,int const& inD, int const& oneinD,string optN, int const& gent);
-// long double factorial(int n);
-// long double binomialCoeff(int n,int i);
-// double poissonApprox(int popS, double muta, int k);
-// int mutateIndividual(std::vector<double> & changeProb, double const & rnNum);
-// double diffFNs(int const & probOPT, double const& prob, double t, double x,double const& gamma, double const& groupSize);
-// double weightedFrequency(Individual player, double freqT);
-// void wrightFisherPopulation(std::vector<Individual> &popN,  int const& NinD, std::mt19937_64 & rng, std::uniform_real_distribution<double> & uniR);
-// void onegame(std::vector<Individual> &popN0, int const& roundN, int const& inD, int const& gInd,  double const& prob, int const& probOPT,double const& gamma,double *totalC0,double *totalE0,double *genC0,string outOpt,  int const & randRound,std::mt19937_64 & rng,std::uniform_real_distribution<double> & uniR,std::uniform_int_distribution<int> & uni2);
-// void onegeneration (std::vector<Individual> &popN0, int const& roundN, int const& inD, int const& gInd, double const& selectionCo,int const& gameNum,double const& prob, int const& probOPT,double  gamma,double *totalC0,double *totalE0,double *genC0, string outOpt, int const & randRound,std::mt19937_64 & rng,std::uniform_real_distribution<double> & uniR, std::uniform_int_distribution<int> & uni2);
-// void mutatedGeneration(std::vector<Individual> &popN,std::vector<double> & mutationP, int const& inD,int const& roundN,double * sigma,std::mt19937_64 & rng, std::uniform_real_distribution<double> & uniR,  std::uniform_int_distribution<int> & uni2);
+long double factorial(int n);
+long double binomialCoeff(int n,int i);
+double poissonApprox(int popS, double muta, int k);
+int mutateIndividual(std::vector<double> & changeProb, double const & rnNum);
+double diffFNs(int const & probOPT, double const& prob, double t, double x,double const& gamma, double const& groupSize);
+double weightedFrequency(Individual player, double freqT);
+void wrightFisherPopulation(std::vector<Individual> &popN,  int const& NinD, std::mt19937_64 & rng, std::uniform_real_distribution<double> & uniR);
+void onegame(std::vector<Individual> &popN0, int const& roundN, int const& inD, int const& gInd,  double const& prob, int const& probOPT,double const& gamma,double *totalC0,double *totalE0,double *genC0,string outOpt,  int const & randRound,std::mt19937_64 & rng,std::uniform_real_distribution<double> & uniR,std::uniform_int_distribution<int> & uni2);
+void onegeneration (std::vector<Individual> &popN0, int const& roundN, int const& inD, int const& gInd, double const& selectionCo,int const& gameNum,double const& prob, int const& probOPT,double  gamma,double *totalC0,double *totalE0,double *genC0, string outOpt, int const & randRound,std::mt19937_64 & rng,std::uniform_real_distribution<double> & uniR, std::uniform_int_distribution<int> & uni2);
+void mutatedGeneration(std::vector<Individual> &popN,std::vector<double> & mutationP, int const& inD,int const& roundN,double * sigma,std::mt19937_64 & rng, std::uniform_real_distribution<double> & uniR,  std::uniform_int_distribution<int> & uni2);
 
 int main(int argc, char* argv[])
 {
@@ -182,9 +182,8 @@ int main(int argc, char* argv[])
         totalE0[i]=0;
         
 	}
+
 	//initialize individuals and types in a population
-    
-    
 	for(int i=0;i<inD;i++)
 	{
 		popN0[i].Initialize(roundN);
@@ -193,8 +192,7 @@ int main(int argc, char* argv[])
         popN0[i].SetOrigEndowment(indEndowment);
         popN0[i].SetLostEndowment(riskEndowment);
 		popN0[i].SetValues(initContribution, roundN, maxPay,rng);
-		popN0[i].SetIndTarget(groupSize);
-		
+		popN0[i].SetIndTarget(groupSize);	
 	}
 	
 
