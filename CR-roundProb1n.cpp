@@ -28,46 +28,52 @@ using namespace std;
 
 int main(int argc, char* argv[]);
 //void outputFunction(std::vector<Individual> &popN, Mymap & phenolist,Mymap & genolist,double *totalC, double *genC,int const& roundN,int const& countGen,int const& inD, int const& oneinD,string optN, int const& gent);
-long double factorial(int n);
-long double binomialCoeff(int n,int i);
-double poissonApprox(int popS, double muta, int k);
-int mutateIndividual(std::vector<double> & changeProb, double const & rnNum);
-double diffFNs(int const & probOPT, double const& prob, double t, double x,double const& gamma, double const& groupSize);
-double weightedFrequency(Individual player, double freqT);
-void wrightFisherPopulation(std::vector<Individual> &popN,  int const& NinD, std::mt19937_64 & rng, std::uniform_real_distribution<double> & uniR);
-void onegame(std::vector<Individual> &popN0, int const& roundN, int const& inD, int const& gInd,  double const& prob, int const& probOPT,double const& gamma,double *totalC0,double *totalE0,double *genC0,string outOpt,  int const & randRound,std::mt19937_64 & rng,std::uniform_real_distribution<double> & uniR,std::uniform_int_distribution<int> & uni2);
-void onegeneration (std::vector<Individual> &popN0, int const& roundN, int const& inD, int const& gInd, double const& selectionCo,int const& gameNum,double const& prob, int const& probOPT,double  gamma,double *totalC0,double *totalE0,double *genC0, string outOpt, int const & randRound,std::mt19937_64 & rng,std::uniform_real_distribution<double> & uniR, std::uniform_int_distribution<int> & uni2);
-void mutatedGeneration(std::vector<Individual> &popN,std::vector<double> & mutationP, int const& inD,int const& roundN,double * sigma,std::mt19937_64 & rng, std::uniform_real_distribution<double> & uniR,  std::uniform_int_distribution<int> & uni2);
+// long double factorial(int n);
+// long double binomialCoeff(int n,int i);
+// double poissonApprox(int popS, double muta, int k);
+// int mutateIndividual(std::vector<double> & changeProb, double const & rnNum);
+// double diffFNs(int const & probOPT, double const& prob, double t, double x,double const& gamma, double const& groupSize);
+// double weightedFrequency(Individual player, double freqT);
+// void wrightFisherPopulation(std::vector<Individual> &popN,  int const& NinD, std::mt19937_64 & rng, std::uniform_real_distribution<double> & uniR);
+// void onegame(std::vector<Individual> &popN0, int const& roundN, int const& inD, int const& gInd,  double const& prob, int const& probOPT,double const& gamma,double *totalC0,double *totalE0,double *genC0,string outOpt,  int const & randRound,std::mt19937_64 & rng,std::uniform_real_distribution<double> & uniR,std::uniform_int_distribution<int> & uni2);
+// void onegeneration (std::vector<Individual> &popN0, int const& roundN, int const& inD, int const& gInd, double const& selectionCo,int const& gameNum,double const& prob, int const& probOPT,double  gamma,double *totalC0,double *totalE0,double *genC0, string outOpt, int const & randRound,std::mt19937_64 & rng,std::uniform_real_distribution<double> & uniR, std::uniform_int_distribution<int> & uni2);
+// void mutatedGeneration(std::vector<Individual> &popN,std::vector<double> & mutationP, int const& inD,int const& roundN,double * sigma,std::mt19937_64 & rng, std::uniform_real_distribution<double> & uniR,  std::uniform_int_distribution<int> & uni2);
 
 int main(int argc, char* argv[])
 {
+    cout << "STARTING!\n";
+
     std::mt19937_64 rng;
     std::random_device sysrand;
     uint32_t random_seed=sysrand();
     rng.seed(random_seed);
 
     
-    
+
     
     //int clusterInfo=1; //local =0 cluster =1
    // int silke=0;
 	int agValue=1;
 	//RandNum	RNUm;
+
 	string outOpt(argv[agValue]);agValue++;// is for output opts 1 is for total ave and 2 is a generation file
+
 	int clusterInfo=atoi(argv[agValue]);agValue++;
-    int inD=atoi(argv[agValue]);agValue++;
-	double selectionCo=atof(argv[agValue]);agValue++;
-	int gameNum = atoi(argv[agValue]);agValue++;
+    int inD=atoi(argv[agValue]);agValue++; // population size
+    cout << inD << "\n";
+	double selectionCo=atof(argv[agValue]);agValue++; // selection intensity
+	int gameNum = atoi(argv[agValue]);agValue++; // how many games played in one generation
 	int maxgen=atoi(argv[agValue]);agValue++;///for the looping to a max of genrations
 	double mutation=atof(argv[agValue]);agValue++;
 	//Game
-	int gInd = atoi(argv[agValue]);agValue++;
+	int gInd = atoi(argv[agValue]);agValue++; // groupSize
+    cout << "gind " << gInd << "\n";
 	double groupSize=double(gInd);
-	int roundN = atoi(argv[agValue]);agValue++;
-	double maxPay=atof(argv[agValue]);agValue++;
-	double indEndowment=atof(argv[agValue]);agValue++;
-	double riskEndowment=atof(argv[agValue]);agValue++;
-  	double gameTarget=atof(argv[agValue]);agValue++;
+	int roundN = atoi(argv[agValue]);agValue++; // the number of rounds
+	double maxPay=atof(argv[agValue]);agValue++; // max amount one can pay per round
+	double indEndowment=atof(argv[agValue]);agValue++; // endowment of each player at the begining of the game this is W in the paper
+	double riskEndowment=atof(argv[agValue]);agValue++; // the alpha value
+  	double gameTarget=atof(argv[agValue]);agValue++; // target ???
 	//Probability functions
 	double prob= atof(argv[agValue]);agValue++;
 	int probFNOPT=atof(argv[agValue]);agValue++;//this changes it from heavy side, linear to other functions
@@ -137,29 +143,29 @@ int main(int argc, char* argv[])
 	int flag=1;
     int mnum=0;
 	if(inD>0){
-    for(int i2=0;i2<mutationProb0.size();i2++)
-	{
-		if (flag==1)
-		{
-			
-			if(((inD>=100)&&((double(inD)*mutation)<=10.0))||((inD>=20)&&((mutation)<=0.05)))//condition for Poisson Approx
-			{
-				mp=mp+poissonApprox(inD,mutation, i2);
-			}
-			else if (inD<=1000)
-			{
-				mp=mp+(binomialCoeff(inD,i2)*pow(mutation,(i2))*pow(1-mutation,(inD-i2)));
-			}
-			else
-			{
-				std::cout<<"mutation Prob failed\n";
-				return 0;//exist main
-			}
-			if (mp>=1) flag=0;
-		}
-		if (flag==0){mp=0;}
-		mutationProb0[i2]=mp;
-	}
+        for(int i2=0;i2<mutationProb0.size();i2++)
+        {
+            if (flag==1)
+            {
+                
+                if(((inD>=100)&&((double(inD)*mutation)<=10.0))||((inD>=20)&&((mutation)<=0.05)))//condition for Poisson Approx
+                {
+                    mp=mp+poissonApprox(inD,mutation, i2);
+                }
+                else if (inD<=1000)
+                {
+                    mp=mp+(binomialCoeff(inD,i2)*pow(mutation,(i2))*pow(1-mutation,(inD-i2)));
+                }
+                else
+                {
+                    std::cout<<"mutation Prob failed\n";
+                    return 0;//exist main
+                }
+                if (mp>=1) flag=0;
+            }
+            if (flag==0){mp=0;}
+            mutationProb0[i2]=mp;
+        }
     }
  
 	//re initialise variables
@@ -201,35 +207,39 @@ int main(int argc, char* argv[])
             fout.open(filN3);
             fout.close();
 		}
-		
 	}
     
     do
     {
-        
+        // cout<< "roundN: " << roundN << "\n";    
         for(int i=0;i<(roundN+1);i++)
         {
             if(inD>0)genC0[i]=0;
         }
-       // cout<<"before\n";
+    
+        cout << "Count gen: " << countGen << "\n";
+
         onegeneration (popN0,roundN, inD, gInd, selectionCo,gameNum,prob, probFNOPT, gamma,totalC0,totalE0,genC0,outOpt,randRound,rng, uniR,uni2);
-       //  cout<<"after\n";
+        // cout<<"after\n";
         if (outOpt.find("1",0)!= string::npos)
-        {
-            
+        { 
             for(int oneinD=0; oneinD<inD;oneinD++)
             {
                 totalC0[0]+=popN0[oneinD].GetOrigEndowment();//average endowment
                 totalC0[1]+=popN0[oneinD].GetTarget();//average target
                 //cout<<popN[oneinD].GetInfo(2)<<"\n";
-                if((popN0[oneinD].GetInfo(2)>0)&& (popN0[oneinD].GetInfo(3)>0)){totalC0[2]+=(popN0[oneinD].GetInfo(3)/(popN0[oneinD].GetInfo(2)*popN0[oneinD].GetOrigEndowment()));}//get average payoff
-                if(popN0[oneinD].GetInfo(2)>0){totalC0[3]+=(popN0[oneinD].GetGoalReached()/(popN0[oneinD].GetInfo(2)));}//get goal Reached
+                if((popN0[oneinD].GetInfo(2)>0)&& (popN0[oneinD].GetInfo(3)>0)) {
+                    totalC0[2] += (popN0[oneinD].GetInfo(3)/(popN0[oneinD].GetInfo(2)*popN0[oneinD].GetOrigEndowment()));
+                }//get average payoff
+                
+                if(popN0[oneinD].GetInfo(2)>0) { 
+                    totalC0[3]+=(popN0[oneinD].GetGoalReached()/(popN0[oneinD].GetInfo(2)));
+                }//get goal Reached
+
                 //this collects the frequency of the 4 different strategies C=0, C<R, C=R,C>R
                 contribution=popN0[oneinD].CalcContribution();
                 totalC0[4]=totalC0[4]+contribution/popN0[oneinD].GetOrigEndowment();
-
             }
-            
         }
         
 		if (outOpt.find("2",0)!= string::npos)
@@ -259,7 +269,8 @@ int main(int argc, char* argv[])
         
         if(inD>0){wrightFisherPopulation(popN0, inD, rng,uniR);
             //mutatedGeneration(popN0,mutationProb0, inD,roundN, sigma,RNUm);
-            mutatedGeneration(popN0,mutationProb0, inD,roundN, sigma,rng,uniR,uni2);}
+            mutatedGeneration(popN0,mutationProb0, inD,roundN, sigma,rng,uniR,uni2);
+        }
         
         //reset certain values
         
@@ -524,12 +535,14 @@ void onegame(std::vector<Individual> &popN0, int const& roundN, int const& inD, 
     std::shuffle (myDRvector.begin(), myDRvector.end(),rng); //this shuffles the individuals
     for (int i=0; i<gInd; ++i)
     {
+        // cout << "add element " << myDRvector[i] << "\n";
         group0.push_back(myDRvector[i]); // 1 2 3 4 5 6 7 8 9 takes the first 5 of the vector of indiviual numbers
         
     }
     
     
-    
+    // cout << "inD = " << inD << "\n";
+    // cout << "inD = " << gInd << "\n";
     for(int i=0; i < inD;i++)
     {
         
